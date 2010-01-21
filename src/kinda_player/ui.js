@@ -34,12 +34,16 @@ KindaPlayer.include({
   
   // builds the loading/playing status bar
   buildStatus: function() {
-    this.statusTextEl = $E('div', {'class': 'kinda-player-status-text'});
-    this.statusPlayEl = $E('div', {'class': 'kinda-player-status-play'});
+    this.statusLineEl = $E('div', {'class': 'kinda-player-status-line'});
     this.statusLoadEl = $E('div', {'class': 'kinda-player-status-load'});
+    this.statusPlayEl = $E('div', {'class': 'kinda-player-status-play'});
+    this.statusTextEl = $E('div', {'class': 'kinda-player-status-text'});
+    this.statusTimeEl = $E('div', {'class': 'kinda-player-status-time'});
     
-    return $E('div', {'class': 'kinda-player-status'})
-      .insert([this.statusLoadEl, this.statusPlayEl, this.statusTextEl]);
+    return this.statusEl = $E('div', {'class': 'kinda-player-status'})
+      .insert([this.statusTextEl, this.statusTimeEl,
+        this.statusLineEl.insert([this.statusLoadEl, this.statusPlayEl])]
+      );
   },
   
   // builds the navigation buttons block
@@ -60,10 +64,6 @@ KindaPlayer.include({
   // builds the playlist element
   buildList: function() {
     return this.listEl = $E('ul', {'class': 'kinda-player-list'});
-    
-    
-    
-    return this.listEl;
   },
   
   // repopulates the playlist

@@ -193,7 +193,8 @@ KindaPlayer.include({
       var track = this.currentItem.sound;
       var duration = track.loaded ? track.duration : track.durationEstimate;
       
-      track.setPosition(duration / 100 * position);
+      if (duration !== undefined)
+        track.setPosition(duration * position);
       
       this.fire('jump', position);
     }
@@ -245,8 +246,11 @@ KindaPlayer.include({
     
     if (title && id3.artist)
       title += " by "+id3.artist;
-      
-    this.listEl.subNodes('li')[index].update(item.title = title);
+    
+    item.title = title;
+    
+    this.listEl.subNodes('li')[index].update(title);
+    if (index === this.current) this.statusTextEl.update(title);
   }
   
 });

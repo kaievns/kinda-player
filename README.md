@@ -30,10 +30,11 @@ Name         | Default                         | Description
 controls     | 'prev play stop next mute list' | the list and order of the control buttons
 showFx       | 'fade'                          | popup version visual effect
 showDuration | 400                             | popup version visual effect duration
-size:        | 'full'                          | 'full' or 'mini'
-volume:      | 100                             | initial sound volume
-useID3:      | true                            | will overwrite the titles when ID3 tags available
-loop:        | true                            | automatically go the the next position when finished
+size         | 'full'                          | 'full' or 'mini'
+volume       | 100                             | initial sound volume
+useID3       | true                            | will overwrite the titles when ID3 tags available
+loop         | true                            | automatically go the the next position when finished
+loopDealy    | 4000                            | delay in ms between songs in a loop
 showPlaylist | null                            | null for auto, or true|false to enforce
 
 

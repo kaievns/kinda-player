@@ -37,7 +37,53 @@ ul.kinda-player-list {
  -webkit-border-radius: .2em;
 }
 
+
 /** the status bar style */
+div.kinda-player-status {
+  position: relative;
+  margin-bottom: .24em;
+}
+
+div.kinda-player-status-line {
+  position: relative;
+  height: .4em;
+  border: 1px solid #CCC;
+ -moz-border-radius: .2em;
+ -webkit-border-radus: .2em;
+  cursor: pointer;
+  margin-top: .1em;
+}
+
+div.kinda-player-status-play,
+div.kinda-player-status-load {
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  background: #DDD;
+  z-index: 1;
+  -moz-border-radius: .2em;
+  -webkit-border-radus: .2em;
+}
+div.kinda-player-status-play {
+  background: #BBB;
+  z-index: 2;
+}
+
+div.kinda-player-status-text {
+  white-space: nowrap;
+  overflow: hidden;
+  padding: 0 .2em;
+  position: relative;
+  z-index: 3;
+  margin-right: 5em;
+}
+div.kinda-player-status-time {
+  position: absolute;
+  top: 0;
+  right: .2em;
+  white-space: nowrap;
+  z-index: 4;
+}
 
 
 /** the buttons block */
@@ -92,10 +138,12 @@ ul.kinda-player-list {
   border-top: none;
   background-color: #F8F8F8;
   padding: 0;
+  padding-right: .2em;
   overflow: hidden;
 }
 ul.kinda-player-list li {
   padding: .1em .2em;
+  padding-right: 0;
   cursor: pointer;
   color: #444;
   white-space: nowrap;

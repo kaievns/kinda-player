@@ -18,6 +18,7 @@ var KindaPlayer = new Class(Observer, {
       
       useID3:       true,   // will overwrite the titles when ID3 tags available
       loop:         true,   // automatically go the the next position when finished
+      loopDealy:    4000,   // delay in ms between songs in a loop
       
       showPlaylist: null    // null for auto, or true|false to enforce
     },

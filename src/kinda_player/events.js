@@ -6,18 +6,6 @@
 KindaPlayer.include((function() {
   var old_initialize = KindaPlayer.prototype.initialize;
   
-  var find_index_for_element = function(element) {
-    return element.parent().subNodes('li').indexOf(element);
-  };
-  
-  var find_index_for_event = function(event) {
-    if (event.target && event.target.tagName == 'LI') {
-      return find_index_for_element(event.target);
-    }
-    return null;
-  };
-  
-  
 return {
   
   /**
@@ -28,17 +16,18 @@ return {
     old_initialize.apply(this, arguments);
     
     // catching the playlist clicks
-    this.listEl.on({
-      click: function(event) {
-        var index = find_index_for_event.call(this, event);
-        if (index !== null) this.select(index);
-      }.bind(this),
-      
-      dblclick: function(event) {
-        var index = find_index_for_event.call(this, event);
-        if (index !== null) this.play(index);
-      }.bind(this)
-    });
+    this.listEl.onClick(function(event) {
+      var index = this.listEl.subNodes('li').indexOf(event.target);
+      if (index > -1) this.play(index);
+    }.bind(this));
+    
+    // statusbar/repositioning clicks
+    this.statusLineEl.onClick(function(event) {
+      if (this.currentItem) {
+        var dims = this.statusLineEl.dimensions();
+        this.play().setPosition((event.position().x - dims.left) / dims.width);
+      }
+    }.bind(this));
     
     // connecting the buttons
     this.prevButton.onClick(this.prev.bind(this));
@@ -50,33 +39,24 @@ return {
     
     // connecting the internal events
     this.on({
-      select: function(index) {
+      select:  function(index) {
         this.liById(index).radioClass('kinda-player-list-selected');
+        if (!this.playing) {
+          this.statusTextEl.update(this.currentItem.title);
+          this.statusTimeEl.update('0:00/0:00');
+        }
       },
-      
-      play: function() {
+      play:    function() {
         this.element.addClass('kinda-player-playing');
+        this.statusTextEl.update(this.currentItem.title);
       },
-      
-      pause: function() {
-        this.element.removeClass('kinda-player-playing');
-      },
-      
-      stop: function() {
-        this.element.removeClass('kinda-player-playing');
-      },
-      
-      finish: function() {
-        if (this.options.loop) this.next();
-      },
-      
-      mute: function() {
-        this.element.addClass('kinda-player-muted');
-      },
-      
-      unmute: function() {
-        this.element.removeClass('kinda-player-muted');
-      }
+      pause:   function() { this.element.removeClass('kinda-player-playing'); },
+      stop:    function() { this.element.removeClass('kinda-player-playing'); },
+      finish:  function() { if (this.options.loop) this.next.bind(this).delay(this.options.loopDealy); },
+      mute:    function() { this.element.addClass('kinda-player-muted');      },
+      unmute:  function() { this.element.removeClass('kinda-player-muted');   },
+      loading: function(index) { this.updateStatus(index) },
+      playing: function(index) { this.updateStatus(index) }
     });
     
     // selecting the first item by default
@@ -89,15 +69,38 @@ return {
   
 // protected
   
+  // returns the playlist item element by its index
+  liById: function(index) {
+    return this.listEl.subNodes('li')[index];
+  },
+  
+  // toggles the playlist visibility status
   toggleList: function() {
     var visible = this.listEl.visible();
     this.listEl[visible ? 'hide' : 'show']('slide');
     this.element[visible ? 'addClass' : 'removeClass']('kinda-player-nolist');
   },
   
-  // returns the playlist item element by its index
-  liById: function(index) {
-    return this.listEl.subNodes('li')[index];
+  // updates the status bar
+  updateStatus: function(index) {
+    if (index === this.current) {
+      var track = this.playlist[index].sound;
+      var duration = track.loaded ? track.duration : track.durationEstimate;
+      var position = track.position;
+      
+      this.statusPlayEl.style.width = (position / duration * 100).round() + '%';
+      this.statusLoadEl.style.width = (track.bytesLoaded / track.bytesTotal * 100).round() + '%';
+      
+      this.statusTimeEl.update(this.formatTime(position) + '/' + this.formatTime(duration));
+    }
+  },
+  
+  formatTime: function(ms) {
+    var time = (ms / 1000).round();
+    var seconds = time % 60;
+    if (seconds < 10) seconds = '0' + seconds;
+    
+    return (time/60).round() + ":" + seconds;
   }
   
   
