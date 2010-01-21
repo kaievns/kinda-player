@@ -1,0 +1,112 @@
+/**
+ * KindaPlayer stylesheet
+ *
+ * Copyright (C) 2010 Nikolay Nemshilov
+ */
+
+div.kinda-player, div.kinda-player * {
+  margin: 0;
+  padding: 0;
+  width: auto;
+  height: auto;
+  border: none;
+  background: none;
+  list-style: none;
+}
+
+div.kinda-player {
+  width: 20em;
+}
+
+/** loading time style */
+div.kinda-player-waiting {
+  opacity: 0.6;
+  filter: alpha(opacity=60);
+}
+div.kinda-player-waiting * {
+  cursor: default !important;
+}
+
+/** the box style */
+div.kinda-player-box,
+ul.kinda-player-list {
+  border: 1px solid #DDD;
+  background: #EEE;
+  padding: .2em;
+ -moz-border-radius: .2em;
+ -webkit-border-radius: .2em;
+}
+
+/** the status bar style */
+
+
+/** the buttons block */
+div.kinda-player-buttons {
+  position: relative;
+}
+
+div.kinda-player-buttons input {
+  display: inline-block;
+* display: inline;
+* zoom: 1;
+  width: 18px;
+  height: 18px;
+  margin-right: 2px;
+  background-color: #CCC;
+  background-image: url(../images/kinda_player_icons.png);
+  background-repeat: no-repeat;
+  border: 1px solid #AAA;
+ -moz-border-radius: .3em;
+ -webkit-border-radius: .3em;
+  cursor: pointer;
+  opacity: 0.7;
+  filter: alpha(opacity=70);
+}
+div.kinda-player-buttons input:hover {
+  opacity: 1;
+  filter: alpha(opacity=100);
+}
+input.kinda-player-button-prev { background-position:   0px  0px; }
+input.kinda-player-button-next { background-position: -16px  0px; }
+input.kinda-player-button-play { background-position: -32px  0px; }
+input.kinda-player-button-stop { background-position: -64px  0px; }
+input.kinda-player-button-mute { background-position: -111px 0px; }
+input.kinda-player-button-list { background-position: -80px  0px; }
+
+div.kinda-player-muted   input.kinda-player-button-mute { background-position: -127px 0px; }
+div.kinda-player-playing input.kinda-player-button-play { background-position: -48px  0px; }
+div.kinda-player-nolist  input.kinda-player-button-list { background-position: -96px  0px; }
+
+input.kinda-player-button-mute,
+input.kinda-player-button-list {
+  position: absolute;
+  top: 0px;
+  right: 20px;
+}
+input.kinda-player-button-list {
+  right: 0px;
+}
+
+/** the playlist styles */
+ul.kinda-player-list {
+  border-top: none;
+  background-color: #F8F8F8;
+  padding: 0;
+  overflow: hidden;
+}
+ul.kinda-player-list li {
+  padding: .1em .2em;
+  cursor: pointer;
+  color: #444;
+  white-space: nowrap;
+  overflow: hidden;
+}
+ul.kinda-player-list li:hover {
+  background: #CCC;
+  color: #000;
+}
+
+ul.kinda-player-list li.kinda-player-list-selected {
+  font-weight: bold;
+  color: #000;
+}

@@ -25,12 +25,20 @@ Automatic links processing with popups
 
 ## Options
 
-* comming
-* soon
+Name         | Default                         | Description
+-------------|---------------------------------|----------------------------------------
+controls     | 'prev play stop next mute list' | the list and order of the control buttons
+showFx       | 'fade'                          | popup version visual effect
+showDuration | 400                             | popup version visual effect duration
+size:        | 'full'                          | 'full' or 'mini'
+volume:      | 100                             | initial sound volume
+useID3:      | true                            | will overwrite the titles when ID3 tags available
+loop:        | true                            | automatically go the the next position when finished
+showPlaylist | null                            | null for auto, or true|false to enforce
 
 
 ## License
 
 This project uses the [SoundManager2](http://github.com/scottschiller/SoundManager2)
-project flash engine and released under terms of modified BSD-license
+project engine and released under terms of modified BSD-license
 
