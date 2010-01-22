@@ -19,6 +19,10 @@ KindaPlayer.include({
       
     if (!KindaPlayer.ready)
       element.addClass('kinda-player-waiting');
+      
+    this.closeButton = $E('div', {
+      html: '&times;', 'class': 'kinda-player-button-close', title: KindaPlayer.i18n.close
+    }).insertTo(element, 'top').onClick(this.hide.bind(this));
     
     return element;
   },
@@ -79,6 +83,8 @@ KindaPlayer.include({
     this.playlist.each(function(song) {
       this.listEl.insert($E('li', { html: song.title }));
     }, this);
+    
+    [this.prevButton, this.nextButton].each(this.playlist.length < 2 ? 'disable' : 'enable');
     
     return this;
   },

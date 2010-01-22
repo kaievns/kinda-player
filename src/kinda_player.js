@@ -22,16 +22,22 @@ var KindaPlayer = new Class(Observer, {
       loop:         true,   // automatically go the the next position when finished
       loopDealy:    4000,   // delay in ms between songs in a loop
       
-      showPlaylist: true    // show or not the playlist by default
+      showPlaylist: true,    // show or not the playlist by default
+      
+      popupLinks:   'a[rel^=kinda-player]',       // css-rule for hijackable links
+      albumLinks:   'a[rel^=kinda-player-album]', // css-rule for hijackable links of albums
+      
+      autoplay:     false   // automatically start playing popup-players
     },
     
     i18n: {
-      prev: 'Previous Song',
-      next: 'Next Song',
-      play: 'Play/Pause',
-      stop: 'Stop',
-      mute: 'Mute/Unmute',
-      list: 'Toggle playlist'
+      prev:  'Previous Song',
+      next:  'Next Song',
+      play:  'Play/Pause',
+      stop:  'Stop',
+      mute:  'Mute/Unmute',
+      list:  'Toggle playlist',
+      close: 'Close the player'
     },
     
     ready: false,
@@ -61,7 +67,9 @@ var KindaPlayer = new Class(Observer, {
    * @return KindaPlayer this
    */
   insertTo: function(element, position) {
-    this.element.insertTo(element, position);
+    this.element
+      .removeClass('kinda-player-popup')
+      .insertTo(element, position);
     return this;
   },
   
@@ -72,11 +80,34 @@ var KindaPlayer = new Class(Observer, {
    * @return KindaPlayer this
    */
   showAt: function(element) {
+    if (KindaPlayer.popup && KindaPlayer.popup !== this) KindaPlayer.popup.hide();
+    
     this.element
+      .addClass('kinda-player-popup')
+      .addClass('kinda-player-nolist')
+      .insertTo(document.body)
       .moveTo($(element).position())
       .show(this.options.showFx, {
         duration: this.options.showDuration
       });
+    
+    this.listEl.hide();
+    
+    return KindaPlayer.popup = this;
+  },
+  
+  /**
+   * Hides the player popup
+   *
+   * @return KindaPlayer this
+   */
+  hide: function() {
+    if (this.element.hasClass('kinda-player-popup') && this.element.visible()) {
+      this.stop().element.hide(this.options.showFx, {
+        duration: this.options.showDuration
+      });
+      KindaPlayer.popup = null;
+    }
     
     return this;
   }

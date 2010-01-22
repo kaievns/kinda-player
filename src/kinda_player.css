@@ -16,6 +16,8 @@ div.kinda-player, div.kinda-player * {
 
 div.kinda-player {
   width: 20em;
+  -moz-border-radius: .24em;
+  -webkit-border-radius: .24em;
 }
 
 /** loading time style */
@@ -113,6 +115,14 @@ div.kinda-player-buttons input:hover {
   opacity: 1;
   filter: alpha(opacity=100);
 }
+div.kinda-player-buttons input:disabled,
+div.kinda-player-buttons input:disabled:hover {
+  cursor: default;
+  background-color: #BBB;
+  opacity: 0.3;
+  filter: alpha(opacity=30);
+}
+
 input.kinda-player-button-prev { background-position:   0px  center; }
 input.kinda-player-button-next { background-position: -16px  center; }
 input.kinda-player-button-play { background-position: -32px  center; }
@@ -133,6 +143,7 @@ input.kinda-player-button-list {
 input.kinda-player-button-list {
   right: 0px;
 }
+
 
 /** the playlist styles */
 ul.kinda-player-list {
@@ -156,7 +167,6 @@ ul.kinda-player-list li.kinda-player-list-selected {
   color: #000;
   font-weight: bold;
 }
-
 
 
 /** mini-player styles */
@@ -194,4 +204,34 @@ div.kinda-player-mini ul.kinda-player-list {
 div.kinda-player-mini input.kinda-player-button-mute {
   position: relative;
   right: auto;
+}
+
+
+/** popup version styles */
+div.kinda-player-popup {
+  position: absolute;
+  display: none;
+  z-index: 9999;
+ -moz-box-shadow: #888 .1em .2em .5em;
+ -webkit-box-shadow: #888 .1em .2em .5em;
+}
+
+div.kinda-player-button-close {
+  font-weight: bold;
+  cursor: pointer;
+  width: 10px;
+  height: 10px;
+  color: #888;
+  float: right;
+  font-size: 120%;
+  margin-right: -14px;
+  display: none;
+  text-shadow: #CCC .1em .1em .1em;
+}
+div.kinda-player-button-close:hover {
+  color: #000;
+}
+
+div.kinda-player-popup div.kinda-player-button-close {
+  display: block;
 }

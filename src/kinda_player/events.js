@@ -52,7 +52,11 @@ return {
       },
       pause:   function() { this.element.removeClass('kinda-player-playing'); },
       stop:    function() { this.element.removeClass('kinda-player-playing'); },
-      finish:  function() { if (this.options.loop) this.next.bind(this).delay(this.options.loopDealy); },
+      finish:  function() {
+        this.element.removeClass('kinda-player-playing');
+        if (this.options.loop && this.playlist.length > 1)
+          this.next.bind(this).delay(this.options.loopDealy);
+      },
       mute:    function() { this.element.addClass('kinda-player-muted');      },
       unmute:  function() { this.element.removeClass('kinda-player-muted');   },
       loading: function(index) { this.updateStatus(index) },
