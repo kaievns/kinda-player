@@ -84,15 +84,20 @@ KindaPlayer.include({
     
     var item = this.select(index).currentItem;
     if (item) {
+      var event = 'play';
+      
       this.setVolume(this.options.volume);
-      if (item.sound.paused) item.sound.resume();
-      else {
+      
+      if (item.sound.paused) {
+        item.sound.resume();
+        event = 'resume';
+      } else {
         item.sound.setPosition(0);
         item.sound.play();
       }
       
       this.playing = item;
-      this.fire('play');
+      this.fire(event);
     }
     
     return this;
