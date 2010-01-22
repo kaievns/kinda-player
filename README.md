@@ -74,6 +74,33 @@ This player works with the following events
 
 You can work with them in any standard way of [how RightJS deal with events](http://rightjs.org/tutorials/uniformed-events-handling)
 
+## API-Reference
+
+<table>
+  <tr><th>Method</th><th>Description</th></tr>
+  <tr><td>select(index)</td><td>Selects a track out of the playlist</td></tr>
+  <tr><td>play(index)</td><td>Starts to play the track</td></tr>
+  <tr><td>pause()</td><td>Pauses the playback</td></tr>
+  <tr><td>toggle()</td><td>Toggles playback pause</td></tr>
+  <tr><td>stop()</td><td>Stops the playback</td></tr>
+  <tr><td>next()</td><td>Starts to play the next track</td></tr>
+  <tr><td>prev()</td><td>Starts to play the previous track</td></tr>
+  <tr><td>mute()</td><td>Toggles the sound</td></tr>
+  <tr><td>setVolume(int)</td><td>Sets the sound volume (0..100)</td></tr>
+  <tr><td>setPosition(int)</td><td>Sets the playback position in percents (0..100)</td></tr>
+  <tr><td>setPlaylist(mixed)</td><td>Sets the playlist tracks</td></tr>
+  <tr><td>addToList(url[, title])</td><td>Appends a track to the playlist</td></tr>
+  <tr><td>insertTo(element[, position])</td><td>Inserts the player into the given element</td></tr>
+  <tr><td>showAt(element)</td><td>Shows the player as a popup at the given element</td></tr>
+  <tr><td>hide()</td><td>Hides a popup player</td></tr>
+</table>
+
+## Style Adjustments
+
+For the style adjustments reference see the elements structure description inside of
+the `src/kinda_player.css` file.
+
+
 ## Building the source
 
 To build the source I use [FrontCompiler](http://github.com/MadRabbit/frontcompiler) the Ruby based

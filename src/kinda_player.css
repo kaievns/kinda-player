@@ -1,6 +1,39 @@
 /**
  * KindaPlayer stylesheet
  *
+ * Elements have the following structure
+ *
+ * <div class="kinda-player">
+ *   <div class="kinda-player-button-close">&times;</div>
+ *
+ *   <div class="kinda-player-box">
+ *     <div class="kinda-player-status">
+ *       <div class="kinda-player-status-line">
+ *         <div class="kinda-player-status-load"></div>
+ *         <div class="kinda-player-status-play"></div>
+ *       </div>
+ *
+ *       <div class="kinda-player-status-text">Current track title</div>
+ *       <div class="kinda-player-status-time">0:00/0:00</div>
+ *     </div>
+ *
+ *     <div class="kinda-player-buttons">
+ *       <input type="button" class="kinda-player-button-prev" />
+ *       <input type="button" class="kinda-player-button-play" />
+ *       <input type="button" class="kinda-player-button-stop" />
+ *       <input type="button" class="kinda-player-button-next" />
+ *       <input type="button" class="kinda-player-button-mute" />
+ *       <input type="button" class="kinda-player-button-list" />
+ *     </div>
+ *   </div>
+ *
+ *   <ul class="kinda-player-list">
+ *     <li>Track1 Title</li>
+ *     <li>Track2 Title</li>
+ *     <li>Track3 Title</li>
+ *   </ul>
+ * </div>
+ *
  * Copyright (C) 2010 Nikolay Nemshilov
  */
 
