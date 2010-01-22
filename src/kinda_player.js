@@ -13,6 +13,8 @@ var KindaPlayer = new Class(Observer, {
       showFx:       'fade',
       showDuration: 400,
       
+      scrollFx:     true,    // a marker if it show the scrolling fx in the currrent title
+      
       size:         'full',  // 'full' || 'mini'
       volume:        100,
       
@@ -20,7 +22,7 @@ var KindaPlayer = new Class(Observer, {
       loop:         true,   // automatically go the the next position when finished
       loopDealy:    4000,   // delay in ms between songs in a loop
       
-      showPlaylist: null    // null for auto, or true|false to enforce
+      showPlaylist: true    // show or not the playlist by default
     },
     
     i18n: {

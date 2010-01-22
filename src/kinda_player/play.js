@@ -48,7 +48,7 @@ KindaPlayer.include({
     this.playlist.push(this.initSound({
       id:    url.replace(/[^a-z0-9]/g, '_'),
       url:   url,
-      title: title || url.split('/').last()
+      title: title || decodeURIComponent(url.split('/').last())
     }));
     
     return this.rebuildList();
@@ -85,7 +85,11 @@ KindaPlayer.include({
     var item = this.select(index).currentItem;
     if (item) {
       this.setVolume(this.options.volume);
-      item.sound[item.sound.paused ? 'resume' : 'play']();
+      if (item.sound.paused) item.sound.resume();
+      else {
+        item.sound.setPosition(0);
+        item.sound.play();
+      }
       
       this.playing = item;
       this.fire('play');
@@ -231,7 +235,7 @@ KindaPlayer.include({
         onstop:       callback_wrap.curry(this, 'stop',    item),
         whileloading: callback_wrap.curry(this, 'loading', item),
         whileplaying: callback_wrap.curry(this, 'playing', item),
-        onid3:        this.updateID3.bind(this,            item),
+        onid3:        this.updateID3.bind(this,            item)
       });
     }
     

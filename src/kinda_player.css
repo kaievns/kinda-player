@@ -30,9 +30,9 @@ div.kinda-player-waiting * {
 /** the box style */
 div.kinda-player-box,
 ul.kinda-player-list {
-  border: 1px solid #DDD;
+  border: 1px solid #AAA;
   background: #EEE;
-  padding: .2em;
+  padding: .4em;
  -moz-border-radius: .2em;
  -webkit-border-radius: .2em;
 }
@@ -41,17 +41,17 @@ ul.kinda-player-list {
 /** the status bar style */
 div.kinda-player-status {
   position: relative;
-  margin-bottom: .24em;
+  margin-bottom: .36em;
 }
 
 div.kinda-player-status-line {
   position: relative;
   height: .4em;
-  border: 1px solid #CCC;
+  border: 1px solid #AAA;
  -moz-border-radius: .2em;
  -webkit-border-radus: .2em;
   cursor: pointer;
-  margin-top: .1em;
+  margin-top: .2em;
 }
 
 div.kinda-player-status-play,
@@ -59,13 +59,13 @@ div.kinda-player-status-load {
   position: absolute;
   width: 0%;
   height: 100%;
-  background: #DDD;
+  background: #CCC;
   z-index: 1;
   -moz-border-radius: .2em;
   -webkit-border-radus: .2em;
 }
 div.kinda-player-status-play {
-  background: #BBB;
+  background: #999;
   z-index: 2;
 }
 
@@ -137,13 +137,11 @@ input.kinda-player-button-list {
 ul.kinda-player-list {
   border-top: none;
   background-color: #F8F8F8;
-  padding: 0;
-  padding-right: .2em;
+  padding: 0 .2em;
   overflow: hidden;
 }
 ul.kinda-player-list li {
-  padding: .1em .2em;
-  padding-right: 0;
+  padding: .2em;
   cursor: pointer;
   color: #444;
   white-space: nowrap;
@@ -153,8 +151,7 @@ ul.kinda-player-list li:hover {
   background: #CCC;
   color: #000;
 }
-
 ul.kinda-player-list li.kinda-player-list-selected {
-  font-weight: bold;
   color: #000;
+  font-weight: bold;
 }

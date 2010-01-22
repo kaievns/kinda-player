@@ -14,6 +14,9 @@ KindaPlayer.include({
     if (this.options.size == 'mini')
       element.addClass('kinda-player-mini');
       
+    if (!this.options.showPlayList)
+      element.addClass('kinda-player-nolist');
+      
     if (!KindaPlayer.ready)
       element.addClass('kinda-player-waiting');
     
@@ -39,6 +42,9 @@ KindaPlayer.include({
     this.statusPlayEl = $E('div', {'class': 'kinda-player-status-play'});
     this.statusTextEl = $E('div', {'class': 'kinda-player-status-text'});
     this.statusTimeEl = $E('div', {'class': 'kinda-player-status-time'});
+    
+    if (this.options.scrollFx)
+      this.scrollingFx(this.statusTextEl);
     
     return this.statusEl = $E('div', {'class': 'kinda-player-status'})
       .insert([this.statusTextEl, this.statusTimeEl,
@@ -75,5 +81,21 @@ KindaPlayer.include({
     }, this);
     
     return this;
+  },
+  
+  // creates a simple scrolling fx for the element
+  scrollingFx: function(element) {
+    (function() {
+      if (!element.scroll_direction) element.scroll_direction = 1;
+      var current_scroll = element.scrollLeft;
+      var new_scroll     = current_scroll + element.scroll_direction * 1;
+      
+      element.scrollLeft = new_scroll;
+      
+      if (element.scrollLeft == current_scroll) {
+        element.scroll_direction *= -1;
+      }
+      
+    }).periodical(400);
   }
 });
