@@ -30,11 +30,12 @@ div.kinda-player-waiting * {
 /** the box style */
 div.kinda-player-box,
 ul.kinda-player-list {
-  border: 1px solid #AAA;
+  border: 1px solid #BBB;
   background: #EEE;
   padding: .4em;
- -moz-border-radius: .2em;
- -webkit-border-radius: .2em;
+  position: relative;
+ -moz-border-radius: .24em;
+ -webkit-border-radius: .24em;
 }
 
 
@@ -61,8 +62,8 @@ div.kinda-player-status-load {
   height: 100%;
   background: #CCC;
   z-index: 1;
-  -moz-border-radius: .2em;
-  -webkit-border-radus: .2em;
+  -moz-border-radius: .1em;
+  -webkit-border-radus: .1em;
 }
 div.kinda-player-status-play {
   background: #999;
@@ -112,16 +113,16 @@ div.kinda-player-buttons input:hover {
   opacity: 1;
   filter: alpha(opacity=100);
 }
-input.kinda-player-button-prev { background-position:   0px  0px; }
-input.kinda-player-button-next { background-position: -16px  0px; }
-input.kinda-player-button-play { background-position: -32px  0px; }
-input.kinda-player-button-stop { background-position: -64px  0px; }
-input.kinda-player-button-mute { background-position: -111px 0px; }
-input.kinda-player-button-list { background-position: -80px  0px; }
+input.kinda-player-button-prev { background-position:   0px  center; }
+input.kinda-player-button-next { background-position: -16px  center; }
+input.kinda-player-button-play { background-position: -32px  center; }
+input.kinda-player-button-stop { background-position: -64px  center; }
+input.kinda-player-button-mute { background-position: -111px center; }
+input.kinda-player-button-list { background-position: -80px  center; }
 
-div.kinda-player-muted   input.kinda-player-button-mute { background-position: -127px 0px; }
-div.kinda-player-playing input.kinda-player-button-play { background-position: -48px  0px; }
-div.kinda-player-nolist  input.kinda-player-button-list { background-position: -96px  0px; }
+div.kinda-player-muted   input.kinda-player-button-mute { background-position: -127px center; }
+div.kinda-player-playing input.kinda-player-button-play { background-position: -48px  center; }
+div.kinda-player-nolist  input.kinda-player-button-list { background-position: -96px  center; }
 
 input.kinda-player-button-mute,
 input.kinda-player-button-list {
@@ -154,4 +155,43 @@ ul.kinda-player-list li:hover {
 ul.kinda-player-list li.kinda-player-list-selected {
   color: #000;
   font-weight: bold;
+}
+
+
+
+/** mini-player styles */
+div.kinda-player-mini div.kinda-player-box {
+  padding: .2em;
+}
+
+div.kinda-player-mini div.kinda-player-status {
+  position: relative;
+  margin-left: 42px;
+  margin-bottom: 0;
+}
+div.kinda-player-mini div.kinda-player-status-line {
+  margin-top: 0;
+}
+
+div.kinda-player-mini div.kinda-player-buttons {
+  position: absolute;
+  top: .2em;
+  left: .2em;
+}
+
+div.kinda-player-mini div.kinda-player-buttons input {
+  height: 22px;
+}
+
+div.kinda-player-mini input.kinda-player-button-prev,
+div.kinda-player-mini input.kinda-player-button-next,
+div.kinda-player-mini input.kinda-player-button-stop,
+div.kinda-player-mini input.kinda-player-button-list,
+div.kinda-player-mini ul.kinda-player-list {
+  display: none;
+}
+
+div.kinda-player-mini input.kinda-player-button-mute {
+  position: relative;
+  right: auto;
 }

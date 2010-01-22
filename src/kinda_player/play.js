@@ -46,7 +46,7 @@ KindaPlayer.include({
     if (!this.playlist) this.playlist = [];
     
     this.playlist.push(this.initSound({
-      id:    url.replace(/[^a-z0-9]/g, '_'),
+      id:    'p'+KindaPlayer.index.length + '_'+ url.replace(/[^a-z0-9]/g, '_'),
       url:   url,
       title: title || decodeURIComponent(url.split('/').last())
     }));
