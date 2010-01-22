@@ -14,11 +14,11 @@ has the following features
 
 Pragmatical usage
 
-    new KindaPlayer('/that/url.mp3', {
+    var player = new KindaPlayer('/that/url.mp3', {
       controls: ['start', 'stop']
     });
     
-    new KindaPlayer([
+    var player = new KindaPlayer([
       'url1.mp3',
       'url2.mp3',
       'url3.mp3'
@@ -74,6 +74,15 @@ This player works with the following events
 
 You can work with them in any standard way of [how RightJS deal with events](http://rightjs.org/tutorials/uniformed-events-handling)
 
+## Building the source
+
+To build the source I use [FrontCompiler](http://github.com/MadRabbit/frontcompiler) the Ruby based
+JavaScript compression tool. Therefore you need to have Ruby environment and the [FrontCompiler](http://gemcutter.org/gems/front-compiler)
+installed. After that just say
+
+    rake build
+
+And grab the build at the `build/` directory
 
 ## License
 
