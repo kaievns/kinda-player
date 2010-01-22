@@ -44,7 +44,7 @@ task :build do
   end
   
   source = source + CSS_FILES.collect do |name|
-    @compiler.inline_css(File.read("src/#{name}"))
+    @compiler.inline_css(File.read("src/#{name}").gsub('../images', './images'))
   end
   
   source = source.join("\n\n\n")

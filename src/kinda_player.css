@@ -5,8 +5,8 @@
  */
 
 div.kinda-player, div.kinda-player * {
-  margin: 0;
-  padding: 0;
+  margin: 0px;
+  padding: 0px;
   width: auto;
   height: auto;
   border: none;
@@ -78,7 +78,7 @@ div.kinda-player-status-text {
   padding: 0 .2em;
   position: relative;
   z-index: 3;
-  margin-right: 5em;
+  margin-right: 5.5em;
 }
 div.kinda-player-status-time {
   position: absolute;
@@ -147,6 +147,8 @@ input.kinda-player-button-list {
 
 /** the playlist styles */
 ul.kinda-player-list {
+  margin: 0;
+  padding: 0;
   border-top: none;
   background-color: #F8F8F8;
   padding: 0 .2em;
@@ -190,7 +192,7 @@ div.kinda-player-mini div.kinda-player-buttons {
 }
 
 div.kinda-player-mini div.kinda-player-buttons input {
-  height: 22px;
+  height: 2.2em;
 }
 
 div.kinda-player-mini input.kinda-player-button-prev,
