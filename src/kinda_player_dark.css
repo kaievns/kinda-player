@@ -1,0 +1,63 @@
+/**
+ * A dark skin for KindaPlayer
+ *
+ * NOTE: Should be included _after_ the main JavaScript file!
+ *
+ * Copyright (C) 2010 Nikolay V. Nemshilov
+ */
+
+div.kinda-player {
+  color: #CCC;
+}
+
+div.kinda-player-box,
+ul.kinda-player-list {
+  background: #222;
+  border-color: #444;
+}
+
+div.kinda-player-status-play {
+  background: #444;
+}
+div.kinda-player-status-load {
+  background: #777;
+}
+
+div.kinda-player-buttons input {
+  background-color: #444;
+}
+
+input.kinda-player-button-prev { background-position: -200px center; }
+input.kinda-player-button-next { background-position: -216px center; }
+input.kinda-player-button-play { background-position: -232px center; }
+input.kinda-player-button-stop { background-position: -264px center; }
+input.kinda-player-button-mute { background-position: -311px center; }
+input.kinda-player-button-list { background-position: -280px center; }
+
+div.kinda-player-muted   input.kinda-player-button-mute { background-position: -327px center; }
+div.kinda-player-playing input.kinda-player-button-play { background-position: -248px center; }
+div.kinda-player-nolist  input.kinda-player-button-list { background-position: -296px center; }
+ 
+ul.kinda-player-list li {
+  color: #AAA;
+}
+
+ul.kinda-player-list li:hover {
+  background: #444;
+  color: #CCC;
+}
+ul.kinda-player-list li.kinda-player-list-selected {
+  color: #CCC;
+}
+
+div.kinda-player-popup {
+  -moz-box-shadow: #444 .1em .2em .5em;
+  -webkit-box-shadow: #444 .1em .2em .5em;
+}
+
+div.kinda-player-button-close {
+  text-shadow: #555 .1em .1em .1em;
+}
+div.kinda-player-button-close:hover {
+  color: #FFF;
+}
