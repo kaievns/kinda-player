@@ -85,7 +85,7 @@ div.kinda-player-status-line {
   height: .4em;
   border: 1px solid #AAA;
  -moz-border-radius: .2em;
- -webkit-border-radus: .2em;
+ -webkit-border-radius: .2em;
   cursor: pointer;
   margin-top: .2em;
 }
@@ -98,7 +98,7 @@ div.kinda-player-status-load {
   background: #CCC;
   z-index: 1;
   -moz-border-radius: .1em;
-  -webkit-border-radus: .1em;
+  -webkit-border-radius: .1em;
 }
 div.kinda-player-status-play {
   background: #999;
