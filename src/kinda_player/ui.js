@@ -14,7 +14,7 @@ KindaPlayer.include({
     if (this.options.size == 'mini')
       element.addClass('kinda-player-mini');
       
-    if (!this.options.showPlayList)
+    if (!this.options.showPlaylist)
       element.addClass('kinda-player-nolist');
       
     if (!KindaPlayer.ready)
