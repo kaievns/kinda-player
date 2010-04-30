@@ -45,6 +45,8 @@ You also can create albums of links
   <tr><td>scrollFx</td>     <td>true</td>   <td>marker if it should show a scrolling fx on the title</td></tr>
   <tr><td>size</td>         <td>'full'</td> <td>'full' or 'mini'</td></tr>
   <tr><td>volume</td>       <td>100</td>    <td>initial sound volume</td></tr>
+  <tr><td>minVolume</td>    <td>20</td>     <td>minimal sound volume</td></tr>
+  <tr><td>maxVolume</td>    <td>150</td>    <td>maximal sound volume</td></tr>
   <tr><td>useID3</td>       <td>true</td>   <td>will overwrite the titles when ID3 tags available</td></tr>
   <tr><td>loop</td>         <td>true</td>   <td>automatically go the the next position when finished</td></tr>
   <tr><td>loopDealy</td>    <td>4000</td>   <td>delay in ms between songs in a loop</td></tr>
@@ -71,6 +73,7 @@ This player works with the following events
 * mute
 * unmute
 * jump
+* volume_change
 
 You can work with them in any standard way of [how RightJS deal with events](http://rightjs.org/tutorials/uniformed-events-handling)
 
@@ -99,6 +102,11 @@ You can work with them in any standard way of [how RightJS deal with events](htt
 
 For the style adjustments reference see the elements structure description inside of
 the `src/kinda_player.css` file.
+
+## Dark Theme
+
+To apply the dark theme on the player, just copy the `src/kinda_player_dark.css` file
+into your stylesheets directory and include it on your page the usual way
 
 
 ## Building the source
