@@ -99,12 +99,10 @@ return {
     }
   },
   
+  // formats the time
   formatTime: function(ms) {
-    var time = (ms / 1000).round();
-    var seconds = time % 60;
-    if (seconds < 10) seconds = '0' + seconds;
-    
-    return (time/60).round() + ":" + seconds;
+    var time = (ms / 1000).round(), seconds = time % 60;
+    return (time/60).floor() + ":" + (seconds > 9 ? '' : '0') + seconds;
   }
   
   
