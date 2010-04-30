@@ -33,7 +33,8 @@ KindaPlayer.include({
     
     this.boxEl.insert([
       this.buildStatus(),
-      this.buildButtons()
+      this.buildButtons(),
+      this.buildVolume()
     ]);
     
     return this.boxEl;
@@ -65,10 +66,25 @@ KindaPlayer.include({
     this.muteButton = $E('input', {type: 'button', value: '', 'class': 'kinda-player-button-mute', title: KindaPlayer.i18n.mute});
     this.listButton = $E('input', {type: 'button', value: '', 'class': 'kinda-player-button-list', title: KindaPlayer.i18n.list});
     
+    
+    
     return $E('div', {'class': 'kinda-player-buttons'})
       .insert($w(this.options.controls).map(function(name) {
         return this[name+'Button'];
       }, this).compact())
+  },
+  
+  // builds the volume control bar
+  buildVolume: function() {
+    this.volumeControl = $E('div', {'class': 'kinda-player-volume-control'});
+    this.volumeBar     = $E('div', {'class': 'kinda-player-volume-bar', title: KindaPlayer.i18n.volume});
+    
+    this.updateVolumeBar(this.options.volume);
+    
+    return this.volumeControl.insert([
+      $E('div', {'class': 'kinda-player-volume-bar-bg'}),
+      this.volumeBar
+    ]);
   },
   
   // builds the playlist element
@@ -103,5 +119,11 @@ KindaPlayer.include({
       }
       
     }).periodical(400);
+  },
+  
+  // updates the volume-bar size
+  updateVolumeBar: function(value) {
+    var options = this.options;
+    this.volumeBar.style.width = ((value - options.minVolume) / (options.maxVolume - options.minVolume) * 100).round() + '%';
   }
 });

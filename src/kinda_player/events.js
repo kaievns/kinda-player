@@ -37,6 +37,9 @@ return {
     this.muteButton.onClick(this.mute.bind(this));
     this.listButton.onClick(this.toggleList.bind(this));
     
+    // connecting the volume bar
+    this.volumeControl.onClick(this.updateVol.bind(this));
+    
     // connecting the internal events
     this.on({
       select:  function(index) {
@@ -103,6 +106,13 @@ return {
   formatTime: function(ms) {
     var time = (ms / 1000).round(), seconds = time % 60;
     return (time/60).floor() + ":" + (seconds > 9 ? '' : '0') + seconds;
+  },
+  
+  updateVol: function(event) {
+    var options = this.options, bar_dims = this.volumeControl.dimensions();
+    var value = (event.position().x - bar_dims.left) / bar_dims.width;
+    
+    this.setVolume(options.minVolume + (options.maxVolume - options.minVolume) * value);
   }
   
   

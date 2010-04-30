@@ -61,3 +61,8 @@ div.kinda-player-button-close {
 div.kinda-player-button-close:hover {
   color: #FFF;
 }
+
+div.kinda-player div.kinda-player-volume-bar, 
+div.kinda-player div.kinda-player-volume-bar-bg {
+  background-position: -355px;
+}

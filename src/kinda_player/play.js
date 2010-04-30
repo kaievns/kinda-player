@@ -83,7 +83,7 @@ KindaPlayer.include({
     if (this.playing) this.playing.sound.stop();
     
     var item = this.select(index).currentItem;
-    if (item) {
+    if (item && item.sound) {
       var event = 'play';
       
       this.setVolume(this.options.volume);
@@ -180,9 +180,24 @@ KindaPlayer.include({
    * @param Integer volume 0..100
    * @return KindaPlayer this
    */
-  setVolume: function(value) {
-    if (isNumber(value) && this.currentItem) {
-      this.currentItem.sound.setVolume(this.options.volume = value);
+  setVolume: function(volume) {
+    if (isNumber(volume) && this.currentItem) {
+      var options = this.options, item = this.currentItem, old_volume = options.volume;
+      
+      if (volume < options.minVolume) volume = options.minVolume;
+      if (volume > options.maxVolume) volume = options.maxVolume;
+      
+      if (item.sound) {
+        old_volume = item.sound.volume;
+        item.sound.setVolume(volume);
+      }
+      
+      options.volume = volume;
+      this.updateVolumeBar(volume);
+      
+      if (old_volume != volume) {
+        this.fire('volume_change', volume);
+      }
     }
     
     return this;

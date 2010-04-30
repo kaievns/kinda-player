@@ -5,10 +5,10 @@
  */
 var KindaPlayer = new Class(Observer, {
   extend: {
-    EVENTS: $w('play pause resume stop finish load error loading playing select mute unmute jump'),
+    EVENTS: $w('play pause resume stop finish load error loading playing select mute unmute jump volume_change'),
     
     Options: {
-      controls:     'prev play stop next mute list',
+      controls:     'prev play stop next mute list volume',
       
       showFx:       'fade',
       showDuration: 400,
@@ -17,6 +17,8 @@ var KindaPlayer = new Class(Observer, {
       
       size:         'full',  // 'full' || 'mini'
       volume:        100,
+      minVolume:      20,
+      maxVolume:     150,
       
       useID3:       true,   // will overwrite the titles when ID3 tags available
       loop:         true,   // automatically go the the next position when finished
@@ -31,13 +33,14 @@ var KindaPlayer = new Class(Observer, {
     },
     
     i18n: {
-      prev:  'Previous Song',
-      next:  'Next Song',
-      play:  'Play/Pause',
-      stop:  'Stop',
-      mute:  'Mute/Unmute',
-      list:  'Toggle playlist',
-      close: 'Close the player'
+      prev:   'Previous Song',
+      next:   'Next Song',
+      play:   'Play/Pause',
+      stop:   'Stop',
+      mute:   'Mute/Unmute',
+      volume: 'Volume',
+      list:   'Toggle playlist',
+      close:  'Close the player'
     },
     
     ready: false,
