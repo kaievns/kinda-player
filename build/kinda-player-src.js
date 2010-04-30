@@ -12,10 +12,10 @@
  */
 var KindaPlayer = new Class(Observer, {
   extend: {
-    EVENTS: $w('play pause resume stop finish load error loading playing select mute unmute jump'),
+    EVENTS: $w('play pause resume stop finish load error loading playing select mute unmute jump volume_change'),
     
     Options: {
-      controls:     'prev play stop next mute list',
+      controls:     'prev play stop next mute list volume',
       
       showFx:       'fade',
       showDuration: 400,
@@ -24,6 +24,8 @@ var KindaPlayer = new Class(Observer, {
       
       size:         'full',  // 'full' || 'mini'
       volume:        100,
+      minVolume:      20,
+      maxVolume:     150,
       
       useID3:       true,   // will overwrite the titles when ID3 tags available
       loop:         true,   // automatically go the the next position when finished
@@ -38,13 +40,14 @@ var KindaPlayer = new Class(Observer, {
     },
     
     i18n: {
-      prev:  'Previous Song',
-      next:  'Next Song',
-      play:  'Play/Pause',
-      stop:  'Stop',
-      mute:  'Mute/Unmute',
-      list:  'Toggle playlist',
-      close: 'Close the player'
+      prev:   'Previous Song',
+      next:   'Next Song',
+      play:   'Play/Pause',
+      stop:   'Stop',
+      mute:   'Mute/Unmute',
+      volume: 'Volume',
+      list:   'Toggle playlist',
+      close:  'Close the player'
     },
     
     ready: false,
@@ -138,7 +141,7 @@ KindaPlayer.include({
     if (this.options.size == 'mini')
       element.addClass('kinda-player-mini');
       
-    if (!this.options.showPlayList)
+    if (!this.options.showPlaylist)
       element.addClass('kinda-player-nolist');
       
     if (!KindaPlayer.ready)
@@ -157,7 +160,8 @@ KindaPlayer.include({
     
     this.boxEl.insert([
       this.buildStatus(),
-      this.buildButtons()
+      this.buildButtons(),
+      this.buildVolume()
     ]);
     
     return this.boxEl;
@@ -189,10 +193,25 @@ KindaPlayer.include({
     this.muteButton = $E('input', {type: 'button', value: '', 'class': 'kinda-player-button-mute', title: KindaPlayer.i18n.mute});
     this.listButton = $E('input', {type: 'button', value: '', 'class': 'kinda-player-button-list', title: KindaPlayer.i18n.list});
     
+    
+    
     return $E('div', {'class': 'kinda-player-buttons'})
       .insert($w(this.options.controls).map(function(name) {
         return this[name+'Button'];
       }, this).compact())
+  },
+  
+  // builds the volume control bar
+  buildVolume: function() {
+    this.volumeControl = $E('div', {'class': 'kinda-player-volume-control'});
+    this.volumeBar     = $E('div', {'class': 'kinda-player-volume-bar', title: KindaPlayer.i18n.volume});
+    
+    this.updateVolumeBar(this.options.volume);
+    
+    return this.volumeControl.insert([
+      $E('div', {'class': 'kinda-player-volume-bar-bg'}),
+      this.volumeBar
+    ]);
   },
   
   // builds the playlist element
@@ -227,6 +246,12 @@ KindaPlayer.include({
       }
       
     }).periodical(400);
+  },
+  
+  // updates the volume-bar size
+  updateVolumeBar: function(value) {
+    var options = this.options;
+    this.volumeBar.style.width = ((value - options.minVolume) / (options.maxVolume - options.minVolume) * 100).round() + '%';
   }
 });
 
@@ -317,7 +342,7 @@ KindaPlayer.include({
     if (this.playing) this.playing.sound.stop();
     
     var item = this.select(index).currentItem;
-    if (item) {
+    if (item && item.sound) {
       var event = 'play';
       
       this.setVolume(this.options.volume);
@@ -414,9 +439,24 @@ KindaPlayer.include({
    * @param Integer volume 0..100
    * @return KindaPlayer this
    */
-  setVolume: function(value) {
-    if (isNumber(value) && this.currentItem) {
-      this.currentItem.sound.setVolume(this.options.volume = value);
+  setVolume: function(volume) {
+    if (isNumber(volume) && this.currentItem) {
+      var options = this.options, item = this.currentItem, old_volume = options.volume;
+      
+      if (volume < options.minVolume) volume = options.minVolume;
+      if (volume > options.maxVolume) volume = options.maxVolume;
+      
+      if (item.sound) {
+        old_volume = item.sound.volume;
+        item.sound.setVolume(volume);
+      }
+      
+      options.volume = volume;
+      this.updateVolumeBar(volume);
+      
+      if (old_volume != volume) {
+        this.fire('volume_change', volume);
+      }
     }
     
     return this;
@@ -539,6 +579,9 @@ return {
     this.muteButton.onClick(this.mute.bind(this));
     this.listButton.onClick(this.toggleList.bind(this));
     
+    // connecting the volume bar
+    this.volumeControl.onClick(this.updateVol.bind(this));
+    
     // connecting the internal events
     this.on({
       select:  function(index) {
@@ -601,12 +644,17 @@ return {
     }
   },
   
+  // formats the time
   formatTime: function(ms) {
-    var time = (ms / 1000).round();
-    var seconds = time % 60;
-    if (seconds < 10) seconds = '0' + seconds;
+    var time = (ms / 1000).round(), seconds = time % 60;
+    return (time/60).floor() + ":" + (seconds > 9 ? '' : '0') + seconds;
+  },
+  
+  updateVol: function(event) {
+    var options = this.options, bar_dims = this.volumeControl.dimensions();
+    var value = (event.position().x - bar_dims.left) / bar_dims.width;
     
-    return (time/60).round() + ":" + seconds;
+    this.setVolume(options.minVolume + (options.maxVolume - options.minVolume) * value);
   }
   
   
@@ -671,4 +719,4 @@ $(document.documentElement).onClick(function(event) {
 });
 
 
-document.write("<style type=\"text/css\">div.kinda-player,div.kinda-player*{margin:0px;padding:0px;width:auto;height:auto;border:none;background:none;list-style:none}div.kinda-player{width:20em;-moz-border-radius:.24em;-webkit-border-radius:.24em}div.kinda-player-waiting{opacity:0.6;filter:alpha(opacity=60)}div.kinda-player-waiting*{cursor:default !important}div.kinda-player-box,ul.kinda-player-list{border:1px solid #BBB;background:#EEE;padding:.4em;position:relative;-moz-border-radius:.24em;-webkit-border-radius:.24em}div.kinda-player-status{position:relative;margin-bottom:.36em}div.kinda-player-status-line{position:relative;height:.4em;border:1px solid #AAA;-moz-border-radius:.2em;-webkit-border-radus:.2em;cursor:pointer;margin-top:.2em}div.kinda-player-status-play,div.kinda-player-status-load{position:absolute;width:0%;height:100%;background:#CCC;z-index:1;-moz-border-radius:.1em;-webkit-border-radus:.1em}div.kinda-player-status-play{background:#999;z-index:2}div.kinda-player-status-text{white-space:nowrap;overflow:hidden;padding:0 .2em;position:relative;z-index:3;margin-right:5.5em}div.kinda-player-status-time{position:absolute;top:0;right:.2em;white-space:nowrap;z-index:4}div.kinda-player-buttons{position:relative}div.kinda-player-buttons input{display:inline-block;*display:inline;*zoom:1;width:18px;height:18px;margin-right:2px;background-color:#CCC;background-image:url(./images/kinda_player_icons.png);background-repeat:no-repeat;border:1px solid #AAA;-moz-border-radius:.3em;-webkit-border-radius:.3em;cursor:pointer;opacity:0.7;filter:alpha(opacity=70)}div.kinda-player-buttons input:hover{opacity:1;filter:alpha(opacity=100)}div.kinda-player-buttons input:disabled,div.kinda-player-buttons input:disabled:hover{cursor:default;background-color:#BBB;opacity:0.3;filter:alpha(opacity=30)}input.kinda-player-button-prev{background-position:0px center}input.kinda-player-button-next{background-position:-16px center}input.kinda-player-button-play{background-position:-32px center}input.kinda-player-button-stop{background-position:-64px center}input.kinda-player-button-mute{background-position:-111px center}input.kinda-player-button-list{background-position:-80px center}div.kinda-player-muted input.kinda-player-button-mute{background-position:-127px center}div.kinda-player-playing input.kinda-player-button-play{background-position:-48px center}div.kinda-player-nolist input.kinda-player-button-list{background-position:-96px center}input.kinda-player-button-mute,input.kinda-player-button-list{position:absolute;top:0px;right:20px}input.kinda-player-button-list{right:0px}ul.kinda-player-list{margin:0;padding:0;border-top:none;background-color:#F8F8F8;padding:0 .2em;overflow:hidden}ul.kinda-player-list li{padding:.2em;cursor:pointer;color:#444;white-space:nowrap;overflow:hidden}ul.kinda-player-list li:hover{background:#CCC;color:#000}ul.kinda-player-list li.kinda-player-list-selected{color:#000;font-weight:bold}div.kinda-player-mini div.kinda-player-box{padding:.2em}div.kinda-player-mini div.kinda-player-status{position:relative;margin-left:42px;margin-bottom:0}div.kinda-player-mini div.kinda-player-status-line{margin-top:0}div.kinda-player-mini div.kinda-player-buttons{position:absolute;top:.2em;left:.2em}div.kinda-player-mini div.kinda-player-buttons input{height:2.2em}div.kinda-player-mini input.kinda-player-button-prev,div.kinda-player-mini input.kinda-player-button-next,div.kinda-player-mini input.kinda-player-button-stop,div.kinda-player-mini input.kinda-player-button-list,div.kinda-player-mini ul.kinda-player-list{display:none}div.kinda-player-mini input.kinda-player-button-mute{position:relative;right:auto}div.kinda-player-popup{position:absolute;display:none;z-index:9999;-moz-box-shadow:#888 .1em .2em .5em;-webkit-box-shadow:#888 .1em .2em .5em}div.kinda-player-button-close{font-weight:bold;cursor:pointer;width:10px;height:10px;color:#888;float:right;font-size:120%;margin-right:-14px;display:none;text-shadow:#CCC .1em .1em .1em}div.kinda-player-button-close:hover{color:#000}div.kinda-player-popup div.kinda-player-button-close{display:block}</style>");
+document.write("<style type=\"text/css\">div.kinda-player,div.kinda-player*{margin:0px;padding:0px;width:auto;height:auto;border:none;background:none;list-style:none}div.kinda-player{width:20em;-moz-border-radius:.24em;-webkit-border-radius:.24em}div.kinda-player-waiting{opacity:0.6;filter:alpha(opacity=60)}div.kinda-player-waiting*{cursor:default !important}div.kinda-player-box,ul.kinda-player-list{border:1px solid #BBB;background:#EEE;padding:.4em;position:relative;-moz-border-radius:.24em;-webkit-border-radius:.24em}div.kinda-player-status{position:relative;margin-bottom:.36em}div.kinda-player-status-line{position:relative;height:.4em;border:1px solid #AAA;-moz-border-radius:.2em;-webkit-border-radius:.2em;cursor:pointer;margin-top:.2em}div.kinda-player-status-play,div.kinda-player-status-load{position:absolute;width:0%;height:100%;background:#CCC;z-index:1;-moz-border-radius:.1em;-webkit-border-radius:.1em}div.kinda-player-status-play{background:#999;z-index:2}div.kinda-player-status-text{white-space:nowrap;overflow:hidden;padding:0 .2em;position:relative;z-index:3;margin-right:5.5em}div.kinda-player-status-time{position:absolute;top:0;right:.2em;white-space:nowrap;z-index:4}div.kinda-player-buttons{position:relative}div.kinda-player-buttons input{display:inline-block;*display:inline;*zoom:1;width:18px;height:18px;margin-right:2px;background-color:#CCC;background-image:url(./images/kinda_player_icons.png);background-repeat:no-repeat;border:1px solid #AAA;-moz-border-radius:.3em;-webkit-border-radius:.3em;cursor:pointer;opacity:0.7;filter:alpha(opacity=70)}div.kinda-player-buttons input:hover{opacity:1;filter:alpha(opacity=100)}div.kinda-player-buttons input:disabled,div.kinda-player-buttons input:disabled:hover{cursor:default;background-color:#BBB;opacity:0.3;filter:alpha(opacity=30)}input.kinda-player-button-prev{background-position:0px center}input.kinda-player-button-next{background-position:-16px center}input.kinda-player-button-play{background-position:-32px center}input.kinda-player-button-stop{background-position:-64px center}input.kinda-player-button-mute{background-position:-111px center}input.kinda-player-button-list{background-position:-80px center}div.kinda-player-muted input.kinda-player-button-mute{background-position:-127px center}div.kinda-player-playing input.kinda-player-button-play{background-position:-48px center}div.kinda-player-nolist input.kinda-player-button-list{background-position:-96px center}input.kinda-player-button-mute,input.kinda-player-button-list{position:absolute;top:0px;right:20px}input.kinda-player-button-list{right:0px}div.kinda-player div.kinda-player-volume-control{position:absolute;right:48px;bottom:.4em;width:32px;height:18px}div.kinda-player div.kinda-player-volume-bar,div.kinda-player div.kinda-player-volume-bar-bg{position:absolute;top:0;left:0;width:0%;height:100%;cursor:pointer;background:url(./images/kinda_player_icons.png)no-repeat -155px center}div.kinda-player div.kinda-player-volume-bar-bg{width:100%;opacity:0.2;filter:alpha(opacity=20)}ul.kinda-player-list{margin:0;padding:0;border-top:none;background-color:#F8F8F8;padding:0 .2em;overflow:hidden}ul.kinda-player-list li{padding:.2em;cursor:pointer;color:#444;white-space:nowrap;overflow:hidden}ul.kinda-player-list li:hover{background:#CCC;color:#000}ul.kinda-player-list li.kinda-player-list-selected{color:#000;font-weight:bold}div.kinda-player-mini div.kinda-player-box{padding:.2em}div.kinda-player-mini div.kinda-player-status{position:relative;margin-left:42px;margin-bottom:0}div.kinda-player-mini div.kinda-player-status-line{margin-top:0}div.kinda-player-mini div.kinda-player-buttons{position:absolute;top:.2em;left:.2em}div.kinda-player-mini div.kinda-player-buttons input{height:2.2em}div.kinda-player-mini input.kinda-player-button-prev,div.kinda-player-mini input.kinda-player-button-next,div.kinda-player-mini input.kinda-player-button-stop,div.kinda-player-mini input.kinda-player-button-list,div.kinda-player-mini div.kinda-player-volume-control,div.kinda-player-mini ul.kinda-player-list{display:none}div.kinda-player-mini input.kinda-player-button-mute{position:relative;right:auto}div.kinda-player-popup{position:absolute;display:none;z-index:9999;-moz-box-shadow:#888 .1em .2em .5em;-webkit-box-shadow:#888 .1em .2em .5em}div.kinda-player-button-close{font-weight:bold;cursor:pointer;width:10px;height:10px;color:#888;float:right;font-size:120%;margin-right:-14px;display:none;text-shadow:#CCC .1em .1em .1em}div.kinda-player-button-close:hover{color:#000}div.kinda-player-popup div.kinda-player-button-close{display:block}</style>");
